@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import EmployeeForm from "../components/EmployeeForm";
 import StatCard from "../components/StatCard";
 import DeleteConfirmDialog from "../components/DeleteConfirmDialog";
+import generateEmployeeId from "../utils/IdGenerator";
 
 import {
   Box,
@@ -69,8 +70,13 @@ export default function Dashboard() {
     if (emp.id) {
       setEmployees((prev) => prev.map((e) => (e.id === emp.id ? emp : e)));
     } else {
-      setEmployees((prev) => [...prev, { ...emp, id: Date.now() }]);
+      const newEmployee = {
+        ...emp,
+        id: generateEmployeeId(employees),
+      };
+      setEmployees((prev) => [...prev, newEmployee]);
     }
+
     setOpenForm(false);
     setSelectedEmployee(null);
   };
@@ -343,7 +349,7 @@ export default function Dashboard() {
               }}
             >
               {[
-                "S.No",
+                "Emp Id",
                 "Profile",
                 "Full Name",
                 "Gender",
@@ -384,9 +390,7 @@ export default function Dashboard() {
                     },
                   }}
                 >
-                  <TableCell align="center">
-                    {page * rowsPerPage + index + 1}
-                  </TableCell>
+                  <TableCell align="center">{e.id}</TableCell>
                   <TableCell>
                     <Avatar
                       src={e.image}
@@ -471,7 +475,7 @@ export default function Dashboard() {
             rowsPerPageOptions={[10, 25, 50, 100]}
             onPageChange={(_, p) => setPage(p)}
             onRowsPerPageChange={(e) => {
-              setRowsPerPage(+e.target.value, 5);
+              setRowsPerPage(parseInt(e.target.value, 10));
               setPage(0);
             }}
           />
