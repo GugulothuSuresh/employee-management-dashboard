@@ -8,6 +8,7 @@ Features include login/logout flow, mock data authentication, and full CRUD (Cre
 ## Table of Contents
 
 - [Demo](#demo)
+- [Screenshots](#screenshots)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Setup & Installation](#setup--installation)
@@ -20,13 +21,14 @@ Features include login/logout flow, mock data authentication, and full CRUD (Cre
     - [Print Employees](#print-employees)
 - [User Flow diagram](#user-flow-diagram)
 - [Usage](#usage)
-- [Screenshots](#screenshots)
 
 ---
 
 ## Demo
 
 Here are the ss what employee management system looks like.
+
+## Screenshots
 
 ![alt text](image.png)
 ![alt text](image-1.png)
