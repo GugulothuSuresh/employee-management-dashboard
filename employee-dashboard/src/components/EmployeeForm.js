@@ -37,6 +37,7 @@ const initialForm = {
 export default function EmployeeForm({ open, employee, onSave, onCancel }) {
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   useEffect(() => {
     if (employee) {
@@ -66,7 +67,16 @@ export default function EmployeeForm({ open, employee, onSave, onCancel }) {
     reader.readAsDataURL(file);
   };
 
+  const handleChange = (field, value) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+
+    if (hasSubmitted) {
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
+    }
+  };
+
   const handleSubmit = () => {
+    setHasSubmitted(true);
     if (!validate()) return;
     onSave(form);
     handleClose();
@@ -75,6 +85,7 @@ export default function EmployeeForm({ open, employee, onSave, onCancel }) {
   const handleClose = () => {
     setForm(initialForm);
     setErrors({});
+    setHasSubmitted(false);
     onCancel();
   };
 
@@ -168,9 +179,9 @@ export default function EmployeeForm({ open, employee, onSave, onCancel }) {
                 label="Full Name"
                 fullWidth
                 value={form.name}
-                error={!!errors.name}
-                helperText={errors.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                error={hasSubmitted && !!errors.name}
+                helperText={hasSubmitted ? errors.name : ""}
+                onChange={(e) => handleChange("name", e.target.value)}
               />
 
               <Stack spacing={2}>
@@ -179,9 +190,9 @@ export default function EmployeeForm({ open, employee, onSave, onCancel }) {
                   label="Gender"
                   fullWidth
                   value={form.gender}
-                  error={!!errors.gender}
-                  helperText={errors.gender}
-                  onChange={(e) => setForm({ ...form, gender: e.target.value })}
+                  error={hasSubmitted && !!errors.gender}
+                  helperText={hasSubmitted ? errors.gender : ""}
+                  onChange={(e) => handleChange("gender", e.target.value)}
                 >
                   <MenuItem value="Male">Male</MenuItem>
                   <MenuItem value="Female">Female</MenuItem>
@@ -192,16 +203,16 @@ export default function EmployeeForm({ open, employee, onSave, onCancel }) {
                     label="Date of Birth"
                     value={form.dob ? dayjs(form.dob) : null}
                     onChange={(newValue) =>
-                      setForm({
-                        ...form,
-                        dob: newValue ? newValue.format("YYYY-MM-DD") : "",
-                      })
+                      handleChange(
+                        "dob",
+                        newValue ? newValue.format("YYYY-MM-DD") : ""
+                      )
                     }
                     slotProps={{
                       textField: {
                         fullWidth: true,
-                        error: !!errors.dob,
-                        helperText: errors.dob,
+                        error: hasSubmitted && !!errors.dob,
+                        helperText: hasSubmitted ? errors.dob : "",
                       },
                     }}
                   />
@@ -213,9 +224,9 @@ export default function EmployeeForm({ open, employee, onSave, onCancel }) {
                 label="State"
                 fullWidth
                 value={form.state}
-                error={!!errors.state}
-                helperText={errors.state}
-                onChange={(e) => setForm({ ...form, state: e.target.value })}
+                error={hasSubmitted && !!errors.state}
+                helperText={hasSubmitted ? errors.state : ""}
+                onChange={(e) => handleChange("state", e.target.value)}
               >
                 <MenuItem value="Telangana">Telangana</MenuItem>
                 <MenuItem value="Karnataka">Karnataka</MenuItem>
